@@ -1,73 +1,244 @@
-# Smart Farmer Market Advisor
+# 🌾 Smart Farmer Market Advisor
 
-Smart Farmer Market Advisor is a full-stack web application that helps farmers decide where and when to sell crops for the best expected profit. It combines mandi price comparison, location-aware logistics, weather context, a rule-based recommendation engine, and an optional OpenAI-powered chat assistant.
+Smart Farmer Market Advisor is an AI-powered decision support platform designed to help farmers maximize profits by identifying the best market and time to sell their crops. The application combines real-time market intelligence, weather forecasting, transportation cost analysis, and AI-driven recommendations to provide actionable insights for farmers.
 
-## What is included
+---
 
-- React + Tailwind CSS frontend with a mobile-friendly farmer workflow
-- Express backend with modular services and clean REST endpoints
-- Real-time ready market fetcher with a fallback demo dataset for offline or sandboxed use
-- AI/rule-based market ranking using price, trend, distance, transport cost, reliability, and weather risk
-- Interactive price trend charts and market profit comparison charts
-- OpenStreetMap + Leaflet map with nearby markets and the top market highlighted
-- Multilingual UI support for English, Hindi, and Telugu
-- Offline-friendly behavior with service-worker caching and local result persistence
-- Optional SMS alert subscriptions and optional PostgreSQL persistence
+## 🚀 Features
 
-## Architecture
+### 📊 Market Price Intelligence
+
+* Compare crop prices across multiple mandis (markets)
+* Analyze historical price trends
+* Identify high-profit selling opportunities
+
+### 🤖 AI-Powered Recommendations
+
+* Smart market ranking engine
+* Profit estimation based on:
+
+  * Market prices
+  * Transportation costs
+  * Distance to market
+  * Price trends
+  * Weather conditions
+  * Market reliability
+
+### 🌦 Weather-Aware Planning
+
+* Real-time weather forecasts
+* Weather risk assessment
+* Harvest and selling strategy suggestions
+
+### 📍 Location-Based Market Discovery
+
+* Interactive map using OpenStreetMap and Leaflet
+* Nearby mandi identification
+* Distance and logistics calculations
+* Highlighted best market recommendations
+
+### 💬 AI Farm Assistant
+
+* OpenAI-powered chatbot support
+* Market-related queries
+* Crop selling guidance
+* Personalized recommendations
+
+### 🌐 Multilingual Support
+
+* English
+* Hindi
+* Telugu
+
+### 📱 Farmer-Friendly Experience
+
+* Responsive mobile-first design
+* Offline-friendly functionality
+* Cached market data for low-connectivity areas
+
+### 🔔 Smart Alerts
+
+* SMS notification support
+* Price alerts for selected crops
+* Future integration with messaging platforms
+
+---
+
+## 🏗 System Architecture
 
 ```text
-client/   -> React UI, Tailwind styling, charts, map, chatbot
-server/   -> Express API, data services, recommendation engine, AI integration
+smart-farmer-market-advisor/
+│
+├── client/        # React frontend
+├── server/        # Express backend
+├── public/        # Static assets
+└── docs/          # Documentation
 ```
 
-## Key API endpoints
+### Frontend
 
-- `GET /api/health` health check
-- `GET /api/markets` fetch market prices, ranking inputs, and trend data
-- `POST /api/analysis` generate ranked recommendations and sell-now vs wait advice
-- `GET /api/location/search?q=...` search manual locations
-- `POST /api/chat` ask the farm advisor assistant follow-up questions
-- `POST /api/alerts` register an SMS price alert subscription
+* React.js
+* Tailwind CSS
+* Recharts
+* Leaflet Maps
+* Responsive UI Components
 
-## External integrations
+### Backend
 
-- Mandi prices: configurable via `MANDI_API_BASE_URL` and `MANDI_API_KEY`
-- Geocoding: Open-Meteo geocoding API
-- Weather: Open-Meteo forecast API
-- Maps: OpenStreetMap tiles rendered with Leaflet
-- Chat assistant: OpenAI Responses API when `OPENAI_API_KEY` and `OPENAI_MODEL` are both set
+* Node.js
+* Express.js
+* REST APIs
+* Recommendation Engine
+* OpenAI Integration
 
-If external APIs are not configured or are unreachable, the app automatically falls back to seeded market intelligence so the full product experience still works in demos and offline-friendly development.
+---
 
-## Setup
+## 📡 API Endpoints
 
-1. Install Node.js 20+.
-2. Copy `.env.example` to `.env` and fill in any optional keys you want to enable.
-3. Install dependencies:
+### Health Check
+
+```http
+GET /api/health
+```
+
+Returns application health status.
+
+### Market Data
+
+```http
+GET /api/markets
+```
+
+Fetches market prices, trends, and recommendation inputs.
+
+### Market Analysis
+
+```http
+POST /api/analysis
+```
+
+Generates market rankings and sell-now vs wait recommendations.
+
+### Location Search
+
+```http
+GET /api/location/search?q=location
+```
+
+Searches locations for market discovery.
+
+### AI Chat Assistant
+
+```http
+POST /api/chat
+```
+
+Provides AI-powered farming and market assistance.
+
+### Alert Subscription
+
+```http
+POST /api/alerts
+```
+
+Registers users for SMS price alerts.
+
+---
+
+## 🔗 External Integrations
+
+| Service              | Purpose                |
+| -------------------- | ---------------------- |
+| Mandi API            | Live market price data |
+| Open-Meteo Geocoding | Location search        |
+| Open-Meteo Weather   | Weather forecasts      |
+| OpenStreetMap        | Interactive maps       |
+| OpenAI API           | AI chatbot assistance  |
+| Twilio (Optional)    | SMS notifications      |
+
+The application includes fallback datasets to ensure functionality even when external APIs are unavailable.
+
+---
+
+## ⚙️ Installation
+
+### Prerequisites
+
+* Node.js 20+
+* npm or yarn
+
+### Clone Repository
+
+```bash
+git clone https://github.com/PrashanthaPM/AI-MARKET.git
+cd AI-MARKET
+```
+
+### Install Dependencies
 
 ```bash
 npm install
 ```
 
-4. Start the app:
+### Configure Environment
+
+Create a `.env` file from `.env.example` and configure optional API keys:
+
+```env
+OPENAI_API_KEY=
+OPENAI_MODEL=
+MANDI_API_BASE_URL=
+MANDI_API_KEY=
+DATABASE_URL=
+```
+
+### Start Development Server
 
 ```bash
 npm run dev
 ```
 
-5. Open:
+Application URLs:
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:4000`
+* Frontend: http://localhost:5173
+* Backend: http://localhost:4000
 
-## PostgreSQL schema
+---
 
-The backend includes [`server/src/db/schema.sql`](./server/src/db/schema.sql) for optional alert persistence. The app works without a database, but if `DATABASE_URL` is provided it will create the alert table automatically at startup.
+## 🗄 Database Support
 
-## Recommended next steps
+The project supports PostgreSQL for storing user alert subscriptions.
 
-- Point `MANDI_API_BASE_URL` to your preferred live mandi price endpoint
-- Add your OpenAI key/model to unlock free-form advisor chat
-- Wire Twilio credentials for real SMS alerts
-- Extend crop and market coverage with local mandi data from your region
+Schema file:
+
+```text
+server/src/db/schema.sql
+```
+
+If a `DATABASE_URL` is provided, required tables are automatically initialized during startup.
+
+---
+
+## 📈 Future Enhancements
+
+* Live mandi integrations across India
+* Crop demand forecasting using Machine Learning
+* Voice-enabled farmer assistant
+* WhatsApp notifications
+* Regional language expansion
+* Personalized farmer dashboards
+* Government scheme recommendations
+* Harvest planning and yield prediction
+
+---
+
+## 🎯 Project Goal
+
+To empower farmers with data-driven insights that improve decision-making, reduce uncertainty, and maximize crop-selling profits through technology and AI.
+
+---
+
+## 👨‍💻 Developed By
+
+**Priyanka M**
+AI-MARKET Project – Smart Farmer Market Advisor
